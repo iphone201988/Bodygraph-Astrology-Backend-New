@@ -4,9 +4,13 @@ const dotenv = require("dotenv");
 const express = require("express");
 const logger = require("morgan");
 const routeGeneratePDFReport = require("./dist/generate-pdf-report");
+const {Signup,Login,forgotPassword,resetPassword} = require("./dist/controller/user.controller");
+const { connectToDB } = require("./dist/config/Database");
 
 // Configure the environment
 dotenv.config();
+
+connectToDB();
 
 // Instantiate the app
 const app = express();
@@ -27,6 +31,11 @@ app.use((req, res, next) => {
 
 // Routes
 app.use("/api/generate-pdf-report", routeGeneratePDFReport);
+app.post("/api/register",Signup)
+app.post("/api/login",Login);
+app.post("/api/forget-password",forgotPassword);
+app.post("/api/reset-password",resetPassword);
+
 
 // Catch 404 and forward to error handler
 app.use(function (req, res, next) {
