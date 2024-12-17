@@ -7,7 +7,6 @@ const routeGeneratePDFReport = require("./dist/generate-pdf-report");
 const {Signup,Login,forgotPassword,resetPassword} = require("./dist/controller/user.controller");
 const { connectToDB } = require("./dist/config/Database");
 
-// Configure the environment
 dotenv.config();
 
 connectToDB();
