@@ -2,6 +2,7 @@ const cookieParser = require("cookie-parser");
 const createError = require("http-errors");
 const dotenv = require("dotenv");
 const express = require("express");
+const cors = require("cors");
 const logger = require("morgan");
 const routeGeneratePDFReport = require("./dist/generate-pdf-report");
 const {Signup,Login,forgotPassword,resetPassword} = require("./dist/controller/user.controller");
@@ -20,6 +21,7 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(cors());
 
 //enable CORS (for testing only -remove in production/deployment)
 app.use((req, res, next) => {
