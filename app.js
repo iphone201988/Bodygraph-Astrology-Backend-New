@@ -7,6 +7,7 @@ const logger = require("morgan");
 const routeGeneratePDFReport = require("./dist/generate-pdf-report");
 const {Signup,Login,forgotPassword,resetPassword} = require("./dist/controller/user.controller");
 const { connectToDB } = require("./dist/config/Database");
+const {CronJob } = require("cron");
 
 dotenv.config();
 
@@ -29,6 +30,19 @@ app.use((req, res, next) => {
 	res.header('Access-Control-Allow-Headers', 'Authorization, Origin, X-Requested-With, Content-Type, Accept');
 	next();
 });
+
+
+const job = new CronJob(
+	'*/1 * * * *',
+	function () {
+		console.log('Cron job running at ' + new Date());
+	},
+	null,
+	true
+);
+
+
+job.start();
 
 // Routes
 app.use("/api/generate-pdf-report", routeGeneratePDFReport);
