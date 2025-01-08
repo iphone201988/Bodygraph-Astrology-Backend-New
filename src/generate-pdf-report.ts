@@ -22,6 +22,7 @@ import transferences from "./strings/transferences.json";
 import distractions from "./strings/distractions.json";
 import circuitries from "./strings/circuitries.json";
 import variables from "./strings/variables.json";
+import { getGatesData } from "./static";
 
 const NodeGeocoder = require("node-geocoder");
 const { find } = require("geo-tz");
@@ -1469,11 +1470,14 @@ router.post("/", async function (req: express.Request, res: express.Response) {
 
           finalData.forEach((element: any, index: any) => {
             if (element.key == bg.activatedPersonalityGates[i]) {
-              hasDuplicateValues.push(index);
+              hasDuplicateValues.push(i);
             }
           });
 
-          let data: any = { key: bg.activatedPersonalityGates[i] };
+          let data: any = {
+            key: bg.activatedPersonalityGates[i],
+            data: getGatesData(bg.activatedPersonalityGates[i]),
+          };
           if (designGates.length) {
             let str = `Conscious ${val[i]}`;
             if (hasDuplicateValues.length) {
@@ -1513,18 +1517,21 @@ router.post("/", async function (req: express.Request, res: express.Response) {
 
           finalData.forEach((element: any, key: any) => {
             if (element.key == bg.activatedDesignGates[i]) {
-              hasDuplicateValues.push(key);
+              hasDuplicateValues.push(i);
             }
           });
 
-          console.log(
-            "hasDupllicated",
-            finalData.length,
-            hasDuplicateValues,
-            hasDuplicateValues.length
-          );
+          // console.log(
+          //   "hasDupllicated",
+          //   finalData.length,
+          //   hasDuplicateValues,
+          //   hasDuplicateValues.length
+          // );
 
-          let data: any = { key: bg.activatedDesignGates[i] };
+          let data: any = {
+            key: bg.activatedDesignGates[i],
+            data: getGatesData(bg.activatedPersonalityGates[i]),
+          };
           let str = `Unconscious ${val[i]}`;
           if (hasDuplicateValues.length) {
             updateDataForDuplicates(
@@ -1558,7 +1565,7 @@ const updateDataForDuplicates = (
   hasDuplicateValues.forEach((element: any) => {
     let str = ` Conscious ${val[element]}`;
 
-    console.log("gwqhvdbwqdvb", val[element], element);
+    // console.log("gwqhvdbwqdvb", val[element], element);
 
     finalData.forEach((data: any, index: any) => {
       if (data.key == gateValue) {
