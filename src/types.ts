@@ -41,6 +41,7 @@ export interface Bodygraph {
 	allActivations: Array<Activation>;
 	circuitries: Array<string>; // e.g. ["Collective Logic", "Collective Abstract" etc...]
 	variable: string;
+	data:Array<any>,
 	activations: {
 		Personality: {
 			Sun: Activation,

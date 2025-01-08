@@ -32,6 +32,7 @@ export function createBodygraph(name: string, date: Date, location: string) {
     allActivations: [],
     circuitries: [],
     variable: "",
+    data:[],
     activations: {
       Personality: {
         Sun: {
@@ -740,8 +741,7 @@ export function createBodygraph(name: string, date: Date, location: string) {
   bodygraph.variable += " D";
   bodygraph.variable += bodygraph.activations.Design.Sun.Tone < 4 ? "L" : "R";
   bodygraph.variable += bodygraph.activations.Design.SouthNode.Tone < 4 ? "L" : "R";
-  console.log('Variable: ' + bodygraph.variable);
-
+  // console.log('Variable: ' + bodygraph.variable);
 
   // TODO: Undefined centers
   // TODO: Incarnation Cross
