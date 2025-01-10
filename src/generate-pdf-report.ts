@@ -1510,7 +1510,7 @@ router.post("/", async function (req: express.Request, res: express.Response) {
         }
       }
       bg.data = finalData;
-      finalData = [];
+      // finalData = [];
       if (bg.activatedDesignGates.length > 0) {
         for (let i = 0; i < bg.activatedDesignGates.length; i++) {
           let hasDuplicateValues: any = [];
@@ -1537,7 +1537,7 @@ router.post("/", async function (req: express.Request, res: express.Response) {
             updateDataForDuplicates(
               hasDuplicateValues,
               val,
-              finalData,
+              bg.data,
               bg.activatedPersonalityGates[i]
             );
             data["activated by"] = str;
@@ -1545,10 +1545,10 @@ router.post("/", async function (req: express.Request, res: express.Response) {
             data["defined by"] = str;
           }
 
-          if (!hasDuplicateValues.length) finalData.push(data);
+          if (!hasDuplicateValues.length) bg.data.push(data);
         }
       }
-      bg.data = [...bg.data, ...finalData];
+      // bg.data = [...bg.data, ...finalData];
     }
     res.status(200).json(bg);
   } catch (ex: any) {
