@@ -1483,9 +1483,9 @@ router.post("/", async function (req: express.Request, res: express.Response) {
             if (hasDuplicateValues.length) {
               updateDataForDuplicates(
                 hasDuplicateValues,
-                val,
                 finalData,
-                bg.activatedPersonalityGates[i]
+                bg.activatedPersonalityGates[i],
+                str
               );
             } else {
               designGates.forEach((element: any) => {
@@ -1498,9 +1498,9 @@ router.post("/", async function (req: express.Request, res: express.Response) {
             if (hasDuplicateValues.length) {
               updateDataForDuplicates(
                 hasDuplicateValues,
-                val,
                 finalData,
-                bg.activatedPersonalityGates[i]
+                bg.activatedPersonalityGates[i],
+                str
               );
             }
             data["activated by"] = str;
@@ -1513,39 +1513,37 @@ router.post("/", async function (req: express.Request, res: express.Response) {
       // finalData = [];
       if (bg.activatedDesignGates.length > 0) {
         for (let i = 0; i < bg.activatedDesignGates.length; i++) {
-          let hasDuplicateValues: any = [];
+          let hasDuplicateValues: boolean = false;
 
           bg.data.forEach((element: any, key: any) => {
             if (element.key == bg.activatedDesignGates[i]) {
-              hasDuplicateValues.push(i);
+              hasDuplicateValues = true;
             }
           });
 
-          // console.log(
-          //   "hasDupllicated",
-          //   finalData.length,
-          //   hasDuplicateValues,
-          //   hasDuplicateValues.length
-          // );
+          if (hasDuplicateValues) continue;
 
           let data: any = {
             key: bg.activatedDesignGates[i],
-            data: getGatesData(bg.activatedPersonalityGates[i]),
+            data: getGatesData(bg.activatedDesignGates[i]),
           };
           let str = `Unconscious ${val[i]}`;
-          if (hasDuplicateValues.length) {
-            updateDataForDuplicates(
-              hasDuplicateValues,
-              val,
-              bg.data,
-              bg.activatedPersonalityGates[i]
-            );
-            data["activated by"] = str;
-          } else {
-            data["defined by"] = str;
-          }
+          data["defined by"] = str;
+          bg.data.push(data);
 
-          if (!hasDuplicateValues.length) bg.data.push(data);
+          // if (hasDuplicateValues.length) {
+          //   updateDataForDuplicates(
+          //     hasDuplicateValues,
+          //     bg.data,
+          //     bg.activatedDesignGates[i],
+          //     str
+          //   );
+          //   data["activated by"] = str;
+          // } else {
+          //   data["defined by"] = str;
+          // }
+
+          // if (!hasDuplicateValues.length) bg.data.push(data);
         }
       }
       // bg.data = [...bg.data, ...finalData];
@@ -1558,23 +1556,21 @@ router.post("/", async function (req: express.Request, res: express.Response) {
 
 const updateDataForDuplicates = (
   hasDuplicateValues: any,
-  val: any,
   finalData: any,
-  gateValue: any
+  gateValue: any,
+  str: any
 ) => {
   hasDuplicateValues.forEach((element: any) => {
-    let str = ` Conscious ${val[element]}`;
-
     // console.log("gwqhvdbwqdvb", val[element], element);
 
     finalData.forEach((data: any, index: any) => {
       if (data.key == gateValue) {
         if (finalData[index].hasOwnProperty("defined by")) {
-          finalData[index]["defined by"] += str;
+          finalData[index]["defined by"] += " " + str;
           //   console.log("here1::::", finalData[index]["defined by"]);
         }
         if (finalData[index].hasOwnProperty("activated by")) {
-          finalData[index]["activated by"] += str;
+          finalData[index]["activated by"] += " " + str;
           //   console.log("here2::::", finalData[index]["activated by"]);
         }
       }
