@@ -1515,7 +1515,7 @@ router.post("/", async function (req: express.Request, res: express.Response) {
         for (let i = 0; i < bg.activatedDesignGates.length; i++) {
           let hasDuplicateValues: any = [];
 
-          finalData.forEach((element: any, key: any) => {
+          bg.data.forEach((element: any, key: any) => {
             if (element.key == bg.activatedDesignGates[i]) {
               hasDuplicateValues.push(i);
             }
