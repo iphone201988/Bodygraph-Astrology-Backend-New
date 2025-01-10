@@ -1489,7 +1489,7 @@ router.post("/", async function (req: express.Request, res: express.Response) {
               );
             } else {
               designGates.forEach((element: any) => {
-                str += ` Unonscious ${val[element]}`;
+                str += ` Unconscious ${val[element]}`;
               });
               data["defined by"] = str;
             }
@@ -1513,37 +1513,33 @@ router.post("/", async function (req: express.Request, res: express.Response) {
       // finalData = [];
       if (bg.activatedDesignGates.length > 0) {
         for (let i = 0; i < bg.activatedDesignGates.length; i++) {
-          let hasDuplicateValues: boolean = false;
+          let hasDuplicateValues: any = [];
 
           bg.data.forEach((element: any, key: any) => {
             if (element.key == bg.activatedDesignGates[i]) {
-              hasDuplicateValues = true;
+              hasDuplicateValues.push(i);
             }
           });
-
-          if (hasDuplicateValues) continue;
 
           let data: any = {
             key: bg.activatedDesignGates[i],
             data: getGatesData(bg.activatedDesignGates[i]),
           };
           let str = `Unconscious ${val[i]}`;
-          data["defined by"] = str;
-          bg.data.push(data);
 
-          // if (hasDuplicateValues.length) {
-          //   updateDataForDuplicates(
-          //     hasDuplicateValues,
-          //     bg.data,
-          //     bg.activatedDesignGates[i],
-          //     str
-          //   );
-          //   data["activated by"] = str;
-          // } else {
-          //   data["defined by"] = str;
-          // }
+          if (hasDuplicateValues.length) {
+            updateDataForDuplicates(
+              hasDuplicateValues,
+              bg.data,
+              bg.activatedDesignGates[i],
+              str
+            );
+            data["activated by"] = str;
+          } else {
+            data["defined by"] = str;
+          }
 
-          // if (!hasDuplicateValues.length) bg.data.push(data);
+          if (!hasDuplicateValues.length) bg.data.push(data);
         }
       }
       // bg.data = [...bg.data, ...finalData];
@@ -1566,12 +1562,12 @@ const updateDataForDuplicates = (
     finalData.forEach((data: any, index: any) => {
       if (data.key == gateValue) {
         if (finalData[index].hasOwnProperty("defined by")) {
-          finalData[index]["defined by"] += " " + str;
-          //   console.log("here1::::", finalData[index]["defined by"]);
+          if (!finalData[index]["defined by"].includes(str))
+            finalData[index]["defined by"] += " " + str;
         }
         if (finalData[index].hasOwnProperty("activated by")) {
-          finalData[index]["activated by"] += " " + str;
-          //   console.log("here2::::", finalData[index]["activated by"]);
+          if (!finalData[index]["activated by"].includes(str))
+            finalData[index]["activated by"] += " " + str;
         }
       }
     });
